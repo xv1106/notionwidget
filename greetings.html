@@ -1,175 +1,171 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Greetings</title>
-
     <style>
-
-
         body{
             font-family: 'Georgia', 'Times New Roman', Times, serif;
             font-variant-caps: all-petite-caps;
-
-
+            background: #232323;
         }
-
         .widget {
-            padding: 5px 5px ;
+            padding: 5px 5px;
             color: white;
             display: flex;
-            justify-content:center;
-            align-items:center;
+            justify-content: center;
+            align-items: center;
             flex-direction: column;
             max-width: 95%;
             margin: auto;
-            border: 3px solid #white;
+            border: 3px solid #000000;
             border-radius: 5px;
-            box-shadow: 2px 2px 1px 0px #white;
-
+            box-shadow: 2px 2px 1px 0px #000000;
+            background: #232323;
         }
-
-           
         .greet{
             font-size: 3em;
         }
-
-        .date {
-      
+        .date, .clock {
             font-family: monospace;
             font-size: 2em;
         }
-
-        .clock {
-            font-family: monospace;
-            font-size: 2em;
-        }
-
         .time {
             display: inline-block;
             min-width: 20px;
         }
-
         .colon {
             font-size: 1em;
             display: inline-block;
         }
-
-     
-
-
-
-
+        /* Button style */
+        #waveBtn {
+            font-size:2.5em;
+            margin-top:12px;
+            border-radius:10px;
+            padding:6px 24px;
+            border:none;
+            background:#ffdf7e;
+            cursor:pointer;
+            transition: background 0.2s;
+        }
+        #waveBtn:active {
+            background: #ffe9b5;
+        }
+        /* Wave animation */
+        .wave {
+            animation: wave-hand 0.5s 3;
+            /* 3 times for a realistic wave */
+            transform-origin: 70% 70%;
+            display: inline-block;
+        }
+        @keyframes wave-hand {
+            0% { transform: rotate(0deg);}
+            15% { transform: rotate(20deg);}
+            30% { transform: rotate(-10deg);}
+            45% { transform: rotate(16deg);}
+            60% { transform: rotate(-8deg);}
+            75% { transform: rotate(12deg);}
+            100% { transform: rotate(0deg);}
+        }
+        #waveMsg {
+            font-size: 1.3em;
+            margin-top: 5px;
+            min-height: 1.5em;
+        }
     </style>
 </head>
 <body>
-
-
-
-
-<div class="container>">
+<div class="container">
     <div class="widget">
-
-            <div class="greet" id="greet"></div>
-
-                <div class="date" id="date"></div>
-                <div class="clock">
-                    <div class="time" id="hour"></div>
-                    <div class="colon">:</div>
-                    <div class="time" id="min"></div>
-                    <div class="colon">:</div>
-                    <div class="time" id="sec"></div>
-                </div>
-           
-
-        
-
+        <div class="greet" id="greet"></div>
+        <button id="waveBtn"><span id="waveEmoji">👋</span></button>
+        <div id="waveMsg"></div>
+        <div class="date" id="date"></div>
+        <div class="clock">
+            <div class="time" id="hour"></div>
+            <div class="colon">:</div>
+            <div class="time" id="min"></div>
+            <div class="colon">:</div>
+            <div class="time" id="sec"></div>
+        </div>
     </div>
 </div>
-        
-
-
-
 <script>
-
 function dispalyGreetings(today){
-        hrs = today.getHours();
-name = "Xavier!";
-if (hrs >= 0 && hrs < 5) {
-    greet = "🌃 Night shift, Xavier?";
-} else if (hrs < 12) {
-    greet = "🌄 Good Morning " + name;
-} else if (hrs < 17) {
-    greet = "☀️ Good Afternoon " + name;
-} else {
-    greet = "🌆 Good Evening " + name;
+    hrs = today.getHours();
+    name = "Xavier!";
+    if (hrs >= 0 && hrs < 5) {
+        greet = "🌃 Night shift, Xavier?";
+    } else if (hrs < 12) {
+        greet = "🌄 Good Morning " + name;
+    } else if (hrs < 17) {
+        greet = "☀️ Good Afternoon " + name;
+    } else {
+        greet = "🌆 Good Evening " + name;
+    }
+    document.getElementById('greet').innerHTML = greet;
 }
-document.getElementById('greet').innerHTML = greet;
+function dispalyDate(today) {  
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    var dayName = days[today.getDay()];
+    var monthName = monthNames[today.getMonth()];
+    var date = today.getDate();
+    var year = today.getFullYear();
+    document.getElementById('date').innerHTML =dayName+", "+monthName+" "+date+" "+year;
+}
+function dispalyClock(today) {
+    var hour = padZeros(twelveHour(today.getHours()));
+    var minutes = padZeros(today.getMinutes());
+    var seconds = padZeros(today.getSeconds());
+    if(today.getHours() >=12){
+        seconds+=" pm"
     }
-
-    function dispalyDate(today) {  
-       
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
-
-        var dayName = days[today.getDay()];
-        var monthName = monthNames[today.getMonth()];
-        var date = today.getDate();
-        var year = today.getFullYear();
-        document.getElementById('date').innerHTML =dayName+", "+monthName+" "+date+" "+year;
-
+    else{
+        seconds+=" am"
     }
-
-
-    function dispalyClock(today) {
-
-        var hour = padZeros(twelveHour(today.getHours()));
-        var minutes = padZeros(today.getMinutes());
-        var seconds = padZeros(today.getSeconds());
-       
-        if(today.getHours() >=12){
-            seconds+=" pm"
-        }
-        else{
-            seconds+=" am"
-        }
-       
-        document.getElementById('hour').innerHTML = hour;
-        document.getElementById('min').innerHTML = minutes;
-        document.getElementById('sec').innerHTML = seconds;
+    document.getElementById('hour').innerHTML = hour;
+    document.getElementById('min').innerHTML = minutes;
+    document.getElementById('sec').innerHTML = seconds;
+}
+function twelveHour(hour) {
+    if (hour > 12) {
+        return hour -= 12
+    } else if (hour === 0) {
+        return hour = 12;
+    } else {
+        return hour
     }
+}
+function padZeros(num) {
+    if (num < 10) {
+        num = '0' + num
+    };
+    return num;
+}
+function dispalyWidget() {
+    var today = new Date();
+    dispalyGreetings(today);
+    dispalyDate(today);
+    dispalyClock(today);
+    setTimeout(dispalyWidget, 500);
+}
+dispalyWidget();
 
-    function twelveHour(hour) {
-        if (hour > 12) {
-            return hour -= 12
-        } else if (hour === 0) {
-            return hour = 12;
-        } else {
-            return hour
-        }
-    }
-    function padZeros(num) {
-        if (num < 10) {
-            num = '0' + num
-        };
-        return num;
-    }
-
-    function dispalyWidget() {
-        var today = new Date();
-        dispalyGreetings(today);
-        dispalyDate(today);
-        dispalyClock(today);
-        setTimeout(dispalyWidget, 500);
-    }
-
-    dispalyWidget()
-
+// Wave button logic
+document.getElementById('waveBtn').onclick = function() {
+    var emoji = document.getElementById('waveEmoji');
+    emoji.classList.remove('wave'); // Reset if already animating
+    void emoji.offsetWidth; // Trigger reflow
+    emoji.classList.add('wave');
+    document.getElementById('waveMsg').textContent = "👋 Hello to you too!";
+    setTimeout(function() {
+        document.getElementById('waveMsg').textContent = "";
+    }, 2000);
+};
 </script>
-
 </body>
 </html>
